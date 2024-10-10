@@ -83,3 +83,41 @@ func GetPlugins(path string) ([]string, error) {
 }
 
 var pluginRegex = regexp.MustCompile(`^\s*set\s+-g\s+@plugin\s+['"]([^'"]+)['"]`)
+
+func HasPermissions(rootPath string) bool {
+	tempFile, err := os.CreateTemp(rootPath, "testFile-*")
+	if err != nil {
+		return false
+	}
+
+	tempFile.Close()
+	os.Remove(tempFile.Name())
+
+	return true
+}
+
+func ParsePlugin(plugin string) (Plugin, error) {
+	parts := strings.SplitN(plugin, "#", 1)
+	otherParts := strings.SplitN(parts[0], "/", 1)
+
+	if len(otherParts) != 2 {
+		return Plugin{}, errors.New("expected plugin to be in format <owner>/<repo>")
+	}
+
+	var branch string
+	if len(parts) == 2 {
+		branch = parts[1]
+	}
+
+	return Plugin{
+		Owner:  otherParts[0],
+		Repo:   otherParts[1],
+		Branch: branch,
+	}, nil
+}
+
+type Plugin struct {
+	Owner  string
+	Repo   string
+	Branch string
+}
