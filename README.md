@@ -81,11 +81,11 @@ set-environment -g PATH "$PATH:<directory where tmux is installed>:<directory th
 run 'gtpm source'
 ```
 
-Note: it is important to include where `tmux` and `gtpm` are installed to.
+Note: it is important to include where `tmux` and `gtpm` are installed to to `PATH`. If you do not set, you will run into `127` errors 😔.
 
 - `tmux` can be installed to
   - `/run/current-system/sw/bin` if using Nix
-  - `/opt/homebrew/bin` if using homebrew  
+  - `/opt/homebrew/bin` if using homebrew
 
 Reload TMUX environment so TPM is sourced:
 
