@@ -39,7 +39,11 @@ You're good to go! The plugin was cloned to `~/.tmux/plugins/` dir and sourced.
 
 ## Uninstalling Plugins
 
-TODO
+1. Remove (or comment out) plugin from the list.
+2. Press `prefix` + <kbd>alt</kbd> + <kbd>u</kbd> (lowercase u as in **u**ninstall) to remove the plugin.
+
+All the plugins are installed to `~/.tmux/plugins/` so alternatively you can
+find plugin directory there and remove it.
 
 ## Key Bindings
 
