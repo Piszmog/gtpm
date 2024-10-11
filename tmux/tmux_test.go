@@ -69,7 +69,8 @@ set -g @plugin 'odedlaz/tmux-onedark-theme'
 			require.NoError(t, err)
 			defer os.Remove(f.Name())
 
-			f.Write([]byte(test.rawFile))
+			_, err = f.Write([]byte(test.rawFile))
+			require.NoError(t, err)
 
 			err = f.Close()
 			require.NoError(t, err)
