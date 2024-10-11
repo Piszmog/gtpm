@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -97,11 +98,11 @@ func HasPermissions(rootPath string) bool {
 }
 
 func ParsePlugin(plugin string) (Plugin, error) {
-	parts := strings.SplitN(plugin, "#", 1)
-	otherParts := strings.SplitN(parts[0], "/", 1)
+	parts := strings.SplitN(plugin, "#", 2)
+	otherParts := strings.SplitN(parts[0], "/", 2)
 
 	if len(otherParts) != 2 {
-		return Plugin{}, errors.New("expected plugin to be in format <owner>/<repo>")
+		return Plugin{}, errors.New("expected plugin to be in format <owner>/<repo>: " + plugin)
 	}
 
 	var branch string
@@ -120,4 +121,92 @@ type Plugin struct {
 	Owner  string
 	Repo   string
 	Branch string
+}
+
+func CreatePluginsDir(path string) error {
+	err := os.MkdirAll(path, os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("failed create plugin directory: %w", err)
+	}
+	return nil
+}
+
+func SetDefaultTPMPath(logger *slog.Logger) error {
+	isSet := true
+	if err := checkIfDefaultEnvSet(); err != nil {
+		if errors.Is(err, errDefaultEnvNotSet) {
+			logger.Debug("default env path has not been set")
+			isSet = false
+		} else {
+			return err
+		}
+	}
+
+	if !isSet {
+		conf, err := GetConfigFilePath(logger)
+		if err != nil {
+			return err
+		}
+		rootDir := filepath.Dir(conf)
+
+		var tpmPath string
+		if strings.Contains(rootDir, ".config") {
+			tpmPath = filepath.Join(rootDir, "plugins")
+		} else {
+			tpmPath = filepath.Join(rootDir, ".tmux", "plugins")
+		}
+
+		cmd := exec.Command("tmux", "set-environment", "-g", "$DEFAULT_TPM_ENV_VAR_NAME", tpmPath)
+
+		out, err := cmd.CombinedOutput()
+		logger.Debug("attempted to set $DEFAULT_TPM_ENV_VAR_NAME", "out", out)
+		if err != nil {
+			return fmt.Errorf("failed to set $DEFAULT_TPM_ENV_VAR_NAME: %w", err)
+		}
+	} else {
+		logger.Debug("default tpm path has been set already")
+	}
+	return nil
+}
+
+func checkIfDefaultEnvSet() error {
+	cmd := exec.Command("tmux", "show-environment", "-g", "$DEFAULT_TPM_ENV_VAR_NAME")
+	if err := cmd.Run(); err != nil {
+		if exitError, ok := err.(*exec.ExitError); ok {
+			switch exitError.ExitCode() {
+			case 1:
+				return errDefaultEnvNotSet
+			default:
+				return fmt.Errorf("failed determine if $DEFAULT_TPM_ENV_VAR_NAME is set: %s", exitError.Error())
+			}
+		}
+	}
+	return nil
+
+}
+
+var errDefaultEnvNotSet = errors.New("default env is not set")
+
+func GetOption(option string) (string, error) {
+	cmd := exec.Command("tmux", "show-option", "-gqv", option)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		if exitError, ok := err.(*exec.ExitError); ok {
+			switch exitError.ExitCode() {
+			case 1:
+				return "", nil
+			default:
+				return "", fmt.Errorf("failed to find option for "+option+": %w", err)
+			}
+		}
+	}
+	return strings.TrimSpace(string(out)), nil
+}
+
+func BindKey(key string, command string) error {
+	cmd := exec.Command("tmux", "bind-key", key, "run-shell", command)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to bind key "+key+" to "+command+": %w", err)
+	}
+	return nil
 }

@@ -50,10 +50,11 @@ func Clean(ctx context.Context, logger *slog.Logger) error {
 	for _, file := range files {
 		if file.IsDir() {
 			for _, p := range plugins {
-				if strings.HasSuffix(p, file.Name()) {
+				if strings.Contains(p, file.Name()) {
 					path := filepath.Join(pluginsPath, file.Name())
 					logger.Debug("deleting plugin directory", "plugin", p, "path", path)
 					os.RemoveAll(path)
+					break
 				}
 			}
 		}

@@ -57,6 +57,15 @@ func main() {
 					return run.Install(ctx.Context, logger)
 				},
 			},
+			{
+				Name:    "source",
+				Aliases: []string{"s"},
+				Usage:   "Source Plugins",
+				Action: func(ctx *cli.Context) error {
+					logger = log.New(log.Level(ctx.String("level")), log.OutputText)
+					return run.Source(ctx.Context, logger)
+				},
+			},
 		},
 	}
 
