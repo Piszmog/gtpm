@@ -92,6 +92,8 @@ Reload TMUX environment so TPM is sourced:
 ```bash
 # type this in terminal if tmux is already running
 tmux source ~/.tmux.conf
+# or
+tmux source $XDG_CONFIG_HOME/tmux/tmux.conf
 ```
 
 ## Installing Plugins
