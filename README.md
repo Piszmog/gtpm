@@ -28,7 +28,64 @@ If `tpm` is giving you a hard time and you are at the end of your rope, sure giv
 
 ## Installation
 
-TODO
+### Requirements
+
+- `tmux` 1.9 or higher
+- `git`
+
+### Download and Install
+
+Download `gtpm` for your system by heading over to [Releases](https://github.com/Piszmog/gtpm/releases) and download the artifact for your architecture.
+
+Or you can use [gh](https://cli.github.com/) to download the artifact.
+
+```shell
+# Download the latest 64-bit version for Linux
+gh release download -R Piszmog/gtpm -p '*linux_x86_64*'
+# Download the latest 64-bit Intel version for macOS
+gh release download -R Piszmog/gtpm -p '*macos_x86_64*'
+# Download the latest Silicon for macOS
+gh release download -R Piszmog/gtpm -p '*macos_arm64*'
+
+# Untar the artifact
+tar -xf gtpm_0.1.0_linux_x86_64.tar.gz
+# Delete the artifact
+rm gtpm_0.1.0_linux_x86_64.tar.gz   
+# Move the binary to a directory on your PATH
+mv gtpm /some/directory/that/is/in/your/path
+```
+
+Ensure `gtpm` is place on your `$PATH` so it can be accessed anywhere.
+
+### Configure tmux
+
+Locate your tmux conf file either at
+
+- `~/.tmux.conf`
+- `$XDG_CONFIG_HOME/tmux/tmux.conf`
+
+And add the following to the bottom of the file
+
+```text
+# List of plugins
+set -g @plugin 'tmux-plugins/tmux-sensible'
+
+# Other examples:
+# set -g @plugin 'github_username/plugin_name'
+# set -g @plugin 'github_username/plugin_name#branch'
+# set -g @plugin 'git@github.com:user/plugin'
+# set -g @plugin 'git@bitbucket.com:user/plugin'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run 'gtpm source'
+```
+
+Reload TMUX environment so TPM is sourced:
+
+```bash
+# type this in terminal if tmux is already running
+tmux source ~/.tmux.conf
+```
 
 ## Installing Plugins
 
