@@ -77,8 +77,15 @@ set -g @plugin 'tmux-plugins/tmux-sensible'
 # set -g @plugin 'git@bitbucket.com:user/plugin'
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+set-environment -g PATH "$PATH:<directory where tmux is installed>:<directory that contains gtpm executable>"
 run 'gtpm source'
 ```
+
+Note: it is important to include where `tmux` and `gtpm` are installed to.
+
+- `tmux` can be installed to
+  - `/run/current-system/sw/bin` if using Nix
+  - `/opt/homebrew/bin` if using homebrew  
 
 Reload TMUX environment so TPM is sourced:
 
