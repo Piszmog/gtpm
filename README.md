@@ -1,4 +1,4 @@
-# TPM Plugin Manager (in Go)
+# Tmux Plugin Manager (in Go)
 
 This is [tpm](https://github.com/tmux-plugins/tpm) reenvisioned in Golang.
 
