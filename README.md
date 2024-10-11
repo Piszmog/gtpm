@@ -123,3 +123,25 @@ find plugin directory there and remove it.
 `prefix` + <kbd>alt</kbd> + <kbd>u</kbd>
 - remove/uninstall plugins not on the plugin list
 
+## Usage
+
+```shell
+$ ./gtpm
+```
+
+### Options
+
+| Option                 | Default | Required  | Description                                                                                                                  |
+|:-----------------------|:-------:|:---------:|:-----------------------------------------------------------------------------------------------------------------------------|
+| `--level`              | `info`  | **False** | Set the logging level. Use `debug` to get more detailed logs.                                                                |
+| `--help`, `-h`         | `false` | **False** | Shows help                                                                                                                   |
+
+### Commands
+
+| Command        | Description                                      | Options                                              |
+|:---------------|:-------------------------------------------------|:-----------------------------------------------------|
+| `clean`, `c`   | Cleans plugins no longer in `tmux` conf file     | N/A                                                  |
+| `update`, `u`  | Update plugins                                   | `--plugin value` (repeat) to update specific plugins |
+| `install`, `i` | Installs plugins                                 | N/A                                                  |
+| `source`, `s`  | Sources plugins and configured key bindings      | N/A                                                  |
+| `help`, `h`    | Shows a list of commands or help for one command | N/A                                                  |
