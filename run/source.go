@@ -131,7 +131,7 @@ func bindKeys(logger *slog.Logger) error {
 		return err
 	}
 	if cleanKey == "" {
-		cleanKey = "C"
+		cleanKey = "M-u"
 	}
 	logger.Debug("binding clean key", "key", cleanKey)
 	if err = tmux.BindKey(cleanKey, "gtpm c"); err != nil {

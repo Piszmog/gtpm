@@ -35,10 +35,13 @@ func Clean(ctx context.Context, logger *slog.Logger) error {
 	if err != nil {
 		return err
 	}
-	logger.Debug("found plugins to clean", "path", confPath, "plugins", plugins)
+	logger.Debug("found current plugins", "path", confPath, "plugins", plugins)
 
 	if len(plugins) == 0 {
-		logger.Debug("no plugins to clean")
+		logger.Debug("conf has no plugins so removing plugins directory", "dir", pluginsPath)
+		if err = os.RemoveAll(pluginsPath); err != nil {
+			return fmt.Errorf("failed to remove plugins directory: %w", err)
+		}
 		return nil
 	}
 
@@ -49,12 +52,17 @@ func Clean(ctx context.Context, logger *slog.Logger) error {
 
 	for _, file := range files {
 		if file.IsDir() {
+			found := false
 			for _, p := range plugins {
 				if strings.Contains(p, file.Name()) {
-					path := filepath.Join(pluginsPath, file.Name())
-					logger.Debug("deleting plugin directory", "plugin", p, "path", path)
-					os.RemoveAll(path)
+					found = true
 					break
+				}
+			}
+			if !found {
+				path := filepath.Join(pluginsPath, file.Name())
+				if err = os.RemoveAll(path); err != nil {
+					return fmt.Errorf("failed to clean plugin "+file.Name()+": %w", err)
 				}
 			}
 		}
