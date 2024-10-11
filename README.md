@@ -40,5 +40,13 @@ TODO
 
 ## Key Bindings
 
-TODO
+`prefix` + <kbd>I</kbd>
+- Installs new plugins from GitHub or any other git repository
+- Refreshes TMUX environment
+
+`prefix` + <kbd>U</kbd>
+- updates plugin(s)
+
+`prefix` + <kbd>alt</kbd> + <kbd>u</kbd>
+- remove/uninstall plugins not on the plugin list
 
