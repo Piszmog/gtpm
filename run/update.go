@@ -55,11 +55,6 @@ func Update(ctx context.Context, logger *slog.Logger, plugins []string) error {
 		return fmt.Errorf("failed to read plugin directory: %w", err)
 	}
 
-	pluginsToBeUpdated := plugins
-	if len(pluginsToBeUpdated) == 0 {
-		pluginsToBeUpdated = existingPlugins
-	}
-
 	var pluginPathsToUpdate []string
 	for _, p := range plugins {
 		for _, configuredPlugin := range existingPlugins {
