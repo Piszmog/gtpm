@@ -24,7 +24,7 @@ and debugging.
 
 If `tpm` is working for you, **no**.
 
-If `tpm` is giving you a hard time and you are at the end of your rope, sure give it a spin.
+If `tpm` is giving you a hard time and you are at the end of your rope, sure give it a spin. I have fully migrated to this and it works greate for me.
 
 ## Installation
 
