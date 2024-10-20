@@ -97,6 +97,9 @@ Note: it is important to include where `tmux` and `gtpm` are installed to to `PA
 - `tmux` can be installed to
   - `/run/current-system/sw/bin` if using Nix
   - `/opt/homebrew/bin` if using homebrew
+- `gtpm` can be installed to
+  - `/opt/homebrew/bin` if using homebrew
+  - Some custom location on your `PATH`
 
 Reload TMUX environment so `gtpm` is sourced:
 
