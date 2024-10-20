@@ -28,12 +28,23 @@ If `tpm` is giving you a hard time and you are at the end of your rope, sure giv
 
 ## Installation
 
-### Requirements
+### Homebrew
+
+Run the following commands,
+
+```shell
+brew tap piszmog/tools
+brew install piszmog/tools/gtpm
+```
+
+### Manual
+
+#### Requirements
 
 - `tmux` 1.9 or higher
 - `git`
 
-### Download and Install
+#### Download and Install
 
 Download `gtpm` for your system by heading over to [Releases](https://github.com/Piszmog/gtpm/releases) and download the artifact for your architecture.
 
